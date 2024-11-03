@@ -1,34 +1,25 @@
 ﻿using AlgoLab.Algorithms;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Exporters;
 
 namespace AlgoLab.Benchmarks
 {
-    [KeepBenchmarkFiles]
-    [AsciiDocExporter]
-    [CsvExporter]
-    [CsvMeasurementsExporter]
-    [HtmlExporter]
-    [PlainExporter]
-    [RPlotExporter]
-    [JsonExporterAttribute.Brief]
-    [JsonExporterAttribute.BriefCompressed]
-    [JsonExporterAttribute.Full]
-    [JsonExporterAttribute.FullCompressed]
-    [MarkdownExporterAttribute.Default]
-    [MarkdownExporterAttribute.GitHub]
-    [MarkdownExporterAttribute.StackOverflow]
-    [MarkdownExporterAttribute.Atlassian]
-    [XmlExporterAttribute.Brief]
-    [XmlExporterAttribute.BriefCompressed]
-    [XmlExporterAttribute.Full]
-    [XmlExporterAttribute.FullCompressed]
     [MemoryDiagnoser]
+    [Config(typeof(Config))]
     public class DACBenchmark
     {
+        private class Config : ManualConfig
+        {
+            public Config()
+            {
+                AddExporter(RPlotExporter.Default); // 启用 RPlotExporter
+            }
+        }
         private int[] arr;
         private int k;
         private int target;
-        [Params(100, 1000, 10000, 100000)]
+        [Params(10, 100, 1000, 10000)]
         public int N;
         [GlobalSetup]
         public void Setup()
